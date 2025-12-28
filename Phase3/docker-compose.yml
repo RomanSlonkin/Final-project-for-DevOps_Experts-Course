@@ -1,0 +1,10 @@
+services:
+  flask-app:
+    image: test-flask-app
+    container_name: phase1-flask-app
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./:/app
+    environment:
+      - FLASK_ENV=development
