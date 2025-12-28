@@ -1,0 +1,34 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: finalproject-health-check
+  namespace: finalproject
+spec:
+  schedule: "*/5 * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 5
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      template:
+        spec:
+          containers:
+          - name: curl-check
+            image: curlimages/curl:8.1.2
+            imagePullPolicy: IfNotPresent
+            args:
+            - /bin/sh
+            - -c
+            - |
+              echo "Checking finalproject service from inside cluster..."
+              URL="http://finalproject-svc.finalproject.svc.cluster.local/health"
+              echo "GET $URL"
+              if curl -sS --fail "$URL" -o /dev/null; then
+                echo "OK: service is reachable"
+                exit 0
+              else
+                echo "ERROR: service check failed"
+                exit 2
+              fi
+          restartPolicy: OnFailure

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: finalproject-svc
+  namespace: finalproject
+  labels:
+    app: finalproject-app
+spec:
+  selector:
+    app: finalproject-app
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+    name: http
+  type: LoadBalancer

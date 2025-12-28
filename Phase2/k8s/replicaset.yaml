@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: finalproject-rs-demo
+  namespace: finalproject
+  labels:
+    demo: replicaset
+spec:
+  # This ReplicaSet is provided for demonstration/learning.
+  # In production you normally use a Deployment to manage ReplicaSets.
+  replicas: 2
+  selector:
+    matchLabels:
+      app: finalproject-app-rs
+  template:
+    metadata:
+      labels:
+        app: finalproject-app-rs
+    spec:
+      containers:
+      - name: finalproject-rs-container
+        image: rslonkin/phase1-flask-app:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080

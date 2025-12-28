@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: finalproject-app
+  namespace: finalproject
+  labels:
+    app: finalproject-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: finalproject-app
+  template:
+    metadata:
+      labels:
+        app: finalproject-app
+    spec:
+      containers:
+      - name: finalproject-container
+        image: rslonkin/phase1-flask-app:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+          name: http
+        envFrom:
+        - configMapRef:
+            name: finalproject-config
+        - secretRef:
+            name: finalproject-secrets
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: http
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          failureThreshold: 3
+          successThreshold: 1
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: http
+          initialDelaySeconds: 15
+          periodSeconds: 20
+          failureThreshold: 3
