@@ -22,4 +22,4 @@ spec:
         image: rslonkin/phase1-flask-app:latest
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 8080
+        - containerPort: 5000
