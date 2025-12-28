@@ -58,8 +58,8 @@ Service access:
 - If using LoadBalancer with Docker Desktop, the service is often reachable at localhost (Docker Desktop maps LB to localhost). Use:
   kubectl get svc -n finalproject
 - Or port-forward locally:
-  kubectl port-forward svc/finalproject-svc -n finalproject 8080:80
-  Then open http://localhost:8080/
+  kubectl port-forward svc/finalproject-svc -n finalproject 5000:80
+  Then open http://localhost:5000/
 
 Check HPA:
 kubectl get hpa -n finalproject
